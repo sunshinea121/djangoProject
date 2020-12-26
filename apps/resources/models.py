@@ -164,7 +164,7 @@ class Assets(models.Model):
     owner = models.ForeignKey(to=Company, on_delete=models.CASCADE, verbose_name="所属者")
     use = models.ForeignKey(to=Company, on_delete=models.CASCADE, verbose_name="使用者")
     sn = models.CharField(max_length=50, unique=True, verbose_name="设备SN")
-    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE, verbose_name="维保信息")
+#    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE, verbose_name="维保信息")
     buy_time = models.DateField(verbose_name="购买时间", default="2000-01-01")
     # business = models.ForeignKey(Business, on_delete=models.CASCADE, verbose_name="所属业务线")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")

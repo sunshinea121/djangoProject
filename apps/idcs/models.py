@@ -10,6 +10,7 @@ class Idcs(models.Model):
     person = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name="联系人")
     phone = models.CharField(db_index=True, verbose_name="联系电话")
     address = models.CharField(max_length=30, verbose_name="地址")
+    remark = models.CharField(max_length=100, blank=True, verbose_name="备注")
 
     class Meta:
         ordering = ('name',)

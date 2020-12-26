@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from quickstart.views import UserViewSet, GroupViewSet
 from snippets import views
+from idcs.views import idc_list
 # from snippets.views import snippet_list, snippet_detail
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -30,11 +31,10 @@ router.register(r'groups', GroupViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^snippets/$', views.SnippetList.as_view()),
-    url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
-    # url(r'^snippets/$', snippet_list),
+    # url(r'^snippets/$', views.SnippetList.as_view()),
+    # url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
+    url(r'^idcs/$', idc_list),
     # url(r'^snippets/(?P<pk>[0-9]+)$', snippet_detail),
     url(r'^admin/', admin.site.urls),
     url('^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
-
