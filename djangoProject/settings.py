@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'quickstart',
     'snippets',
     'idcs',
+    'resource',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
