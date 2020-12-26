@@ -12,7 +12,7 @@ class Idcs(models.Model):
     address = models.CharField(max_length=30, verbose_name="地址")
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -25,4 +25,8 @@ class Cabinet(models.Model):
     name = models.CharField(max_length=10, unique=True, verbose_name="机柜名称")
     idc = models.ForeignKey(to=Idcs,on_delete=models.CASCADE, verbose_name="所属IDC")
 
+    def __str__(self):
+        return self.name
 
+    class Meta:
+        ordering = ('name',)
