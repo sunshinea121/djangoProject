@@ -19,7 +19,7 @@ class AssetModel(models.Model):
     """
     设备型号
     """
-    name = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, unique=True)
+    name = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
     remark = models.CharField(max_length=100, blank=True, verbose_name="备注")
 
     class Meta:
@@ -84,9 +84,9 @@ class Memory(models.Model):
     """
     model_choice = ((1, 'DDR3'), (2, 'DDR4'), (3, 'DDR5'),)
     unit_choice = ((1, 'GB'), (2, "TB"), (3, 'PB'),)
-    model = models.CharField(choices=model_choice, default=1, verbose_name="内存型号")
-    size = models.IntegerField(max_length=3, default=8, verbose_name="内存容量")
-    unit = models.IntegerField(max_length=2, default=1, verbose_name="单位")
+    model = models.CharField(max_length=1, choices=model_choice, default=1, verbose_name="内存型号")
+    size = models.IntegerField(default=8, verbose_name="内存容量")
+    unit = models.IntegerField(default=1, verbose_name="单位")
     remark = models.CharField(max_length=100, blank=True, verbose_name="备注")
 
     def __str__(self):
@@ -120,8 +120,8 @@ class Ipaddress(models.Model):
     IP地址，与网卡绑定
     """
     network_device = models.ForeignKey(NetworkCard, on_delete=models.CASCADE, verbose_name="网卡绑定")
-    address = models.IPAddressField(verbose_name="IP地址")
-    vip = models.IPAddressField(blank=True, verbose_name="VIP地址")
+    address = models.CharField(max_length=15, verbose_name="IP地址")
+    vip = models.CharField(max_length=15, blank=True, verbose_name="VIP地址")
     remark = models.CharField(max_length=100, blank=True, verbose_name="备注")
 
     def __str__(self):
@@ -133,8 +133,8 @@ class Disk(models.Model):
     硬盘
     """
     unit_choice = ((1, 'GB'), (2, "TB"), (3, 'PB'),)
-    size = models.IntegerField(max_length=5, verbose_name="磁盘容量")
-    unit = models.IntegerField(max_length=1, choices=unit_choice, verbose_name="单位")
+    size = models.IntegerField(verbose_name="磁盘容量")
+    unit = models.IntegerField(choices=unit_choice, verbose_name="单位")
     sn = models.CharField(max_length=20, unique=True, verbose_name="磁盘SN")
     remark = models.CharField(max_length=100, blank=True, verbose_name="备注")
 
@@ -161,8 +161,8 @@ class Assets(models.Model):
     asset_model = models.ForeignKey(to=AssetModel, on_delete=models.CASCADE, verbose_name="设备型号")
     manufacturer = models.ForeignKey(to=Manufacturer, on_delete=models.CASCADE, verbose_name="设备品牌")
     asset_type = models.ForeignKey(to=ResourceType, on_delete=models.CASCADE, verbose_name="设备类型")
-    owner = models.ForeignKey(to=Company, on_delete=models.CASCADE, verbose_name="所属者")
-    use = models.ForeignKey(to=Company, on_delete=models.CASCADE, verbose_name="使用者")
+    owner = models.ManyToManyField(to=Company, verbose_name="所属者", related_name="company_owner")
+    use = models.ManyToManyField(to=Company, verbose_name="使用者", related_name="company_use")
     sn = models.CharField(max_length=50, unique=True, verbose_name="设备SN")
 #    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE, verbose_name="维保信息")
     buy_time = models.DateField(verbose_name="购买时间", default="2000-01-01")
@@ -190,7 +190,7 @@ class ServerAsset(models.Model):
     raid_type = models.ForeignKey(Raid, on_delete=models.CASCADE, verbose_name="Raid信息")
     cpu = models.ForeignKey(Cpu, on_delete=models.CASCADE, verbose_name='CPU')
     memory = models.ForeignKey(Memory, on_delete=models.CASCADE, verbose_name="内存")
-    manage_ip = models.IPAddressField(unique=True, verbose_name="管理卡IP")
+    manage_ip = models.CharField(max_length=15, unique=True, verbose_name="管理卡IP")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     update_time = models.DateTimeField(auto_now_add=True, verbose_name="修改时间")
     remark = models.CharField(max_length=100, verbose_name="备注")
@@ -206,12 +206,12 @@ class Server(models.Model):
     host_name = models.CharField(max_length=20, unique=True, verbose_name="主机名")
     # 服务器类型填写【虚拟机，物理机】
     server_type_choice = ((1, "物理机"), (2, "虚拟机"),)
-    server_type = models.CharField(choices=server_type_choice, verbose_name="服务器类型")
+    server_type = models.CharField(max_length=1, choices=server_type_choice, verbose_name="服务器类型")
     os_system = models.CharField(max_length=10, verbose_name="操作系统")
-    ipaddr = models.IPAddressField(unique=True, verbose_name="IP地址")
-    disk = models.IntegerField(max_length=10, verbose_name="硬盘")
-    cpu = models.IntegerField(max_length=2, verbose_name='CPU核数')
-    memory = models.IntegerField(max_length=3, verbose_name="内存")
+    ipaddr = models.CharField(max_length=15, unique=True, verbose_name="IP地址")
+    disk = models.IntegerField(verbose_name="硬盘")
+    cpu = models.IntegerField(verbose_name='CPU核数')
+    memory = models.IntegerField(verbose_name="内存")
 
     def __str__(self):
         return self.host_name
@@ -222,7 +222,7 @@ class InternetAsset(models.Model):
     网络设备
     """
     host_name = models.CharField(max_length=20, unique=True, verbose_name="主机名")
-    ipaddr = models.IPAddressField(unique=True, verbose_name="IP地址")
+    ipaddr = models.CharField(max_length=15, unique=True, verbose_name="IP地址")
 
 
 class Status(models.Model):

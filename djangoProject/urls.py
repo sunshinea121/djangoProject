@@ -17,17 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from rest_framework import routers
-from quickstart.views import UserViewSet, GroupViewSet
-from snippets import views
 from idcs.views import idc_list
 # from snippets.views import snippet_list, snippet_detail
 from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
-router.register(r'groups', GroupViewSet)
-
 
 urlpatterns = [
     url(r'^', include(router.urls)),

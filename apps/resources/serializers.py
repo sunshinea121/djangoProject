@@ -12,7 +12,7 @@ class NetworkSerializer(serializers.Serializer):
         :param validated_data:
         :return:
         """
-        return Snippet.objects.create(**validated_data)
+        # return Snippet.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """
